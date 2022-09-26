@@ -16,13 +16,13 @@
 variable "instance_name_1" {
   description = "The Name tag to set for the EC2 Instance."
   type        = string
-  default     = "test-instance-1"
+  default     = "test-instance-A"
 }
 
 variable "instance_name_2" {
   description = "The Name tag to set for the EC2 Instance."
   type        = string
-  default     = "test-instance-2"
+  default     = "test-instance-B"
 }
 
 variable "instance_type" {
