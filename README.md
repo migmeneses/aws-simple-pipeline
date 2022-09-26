@@ -1,68 +1,31 @@
-# TEST N.1
+# Terraform AWS Example
 
-## Terraform Code
-There is a terraform code that will deploy:
-- 1x EC2 instance
-- 1x S3 Bucket ( Simple Storage )
+This folder contains a simple Terraform module that deploys resources in [AWS](https://aws.amazon.com/) to demonstrate
+how you can use Terratest to write automated tests for your AWS Terraform code. This module deploys two [EC2
+Instances](https://aws.amazon.com/ec2/).
 
-All of them get deployed in the region `eu-central-1`, which located in Frankfurt
-Both resources have the tags: Name=Flugel, Owner=InfraTeam
-And you can find the code in: `main.tf`
+Check out [test/terraform_aws_example_test.go](/test/terraform_aws_example_test.go) to see how you can write
+automated tests for this module.
 
+Note that the EC2 Instances in this module doesn't actually do anything; it just runs a Vanilla Ubuntu 20.04 AMI for
+demonstration purposes. For slightly more complicated, real-world examples of Terraform modules, see
+[terraform-http-example](/examples/terraform-http-example) and [terraform-ssh-example](/examples/terraform-ssh-example).
 
-## Automatic test wirh Terratest
-There is a tool called terratest, and on this occasion helps us to verify if the terraform output will give us the correct tagging \
-for the resources mentioned above.
-
-### Requirements
-- An AWS account and AWS Access Credentials
-- Terratest uses the Go testing framework. \
-To use Terratest, you need to install: [Go](https://golang.org/)
-- Terraform CLI. Ref - [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli) 
-
-### Running automated test
-- Sign up for AWS.
-- Configure your AWS credentials using one of the supported methods for AWS CLI tools. \
-Example:  ~/.aws/config/credentials files contains `aws_access_key_id` and `aws_secret_access_key`
-- Get to the right path and/or directory. On this occasion: flugel-it/terratest/
-- Configure Go dependencies by running:
-```bash
-go mod init github.com/<YOUR_USERNAME>/<YOUR_REPO_NAME>
-go mod tidy
-```
-- Run the Test ( this will run terraform init, apply, output and destroy and it will pass if we have the right tagging )
-```bash
-go test -v -run TestTerraformAwsFlugel 
-```
+**WARNING**: This module and the automated tests for it deploy real resources into your AWS account which can cost you
+money. The resources are all part of the [AWS Free Tier](https://aws.amazon.com/free/), so if you haven't used that up,
+it should be free, but you are completely responsible for all AWS charges.
 
 
-## GitHub Actions Workflow
-GitHub Actions provides us with a pipeline to verify if the code is correct and deploys infrastructure if been requested
+## Running this module manually
 
-### Requirements
-- A Terraform Cloud account
-- An AWS account and AWS Access Credentials
+1. Sign up for [AWS](https://aws.amazon.com/).
+1. Configure your AWS credentials using one of the [supported methods for AWS CLI
+   tools](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html), such as setting the
+   `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables. If you're using the `~/.aws/config` file for profiles then export `AWS_SDK_LOAD_CONFIG` as "True".
+1. Set the AWS region you want to use as the environment variable `AWS_DEFAULT_REGION`.
+1. Install [Terraform](https://www.terraform.io/) and make sure it's on your `PATH`.
+1. Run `terraform init`.
+1. Run `terraform apply`.
+1. When you're done, run `terraform destroy`.
 
-### API-TOKENS
-We have 3x api-tokens in here:
-- `AWS_ACCESS_KEY_ID` found `~/.aws/config/credentials`
-- `AWS_SECRET_ACCESS_KEY` found `~/.aws/config/credentials`
-- `TF_API_TOKEN`, it has to be created within the Terraform Cloud, under the User settings follow by [Tokens](https://app.terraform.io/app/settings/tokens?utm_source=learn)
-
-### Secrets
-On GitHub
-- Go to the top right of the repo menu, and Select `Settings`
-- On the left hand menu, please choose `Secrects`, followed by `Actions`
-- Add 3x `New repository secret(s)`. `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `TF_API_TOKEN` with their respective api-tokens as values
-
-### Run the Pipeline
-Within the github repo, `.github/workflows/` you can find the `terraform.yml` file.
-This file defines the workflow of the pipeline in steps.
-Each step is running a different terraform command, and it ends by providing us with the infrastructure been requested
-
-### How to run the pipeline
-The pipeline runs automatically once you push into the main branch, or made a pull request
-You can find the running pipeline under `Actions` on the top of the repo menu. Continue by:
-- Click on the latest workflow run
-- Click on Terraform, and see each job/step status
 
