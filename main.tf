@@ -33,6 +33,15 @@ resource "aws_instance" "test-uyt" {
   }
 }
 
+resource "aws_instance" "test-lkj" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = var.instance_type
+
+  tags = {
+    Name = var.instance_name_3
+  }
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # LOOK UP THE LATEST UBUNTU AMI
 # ---------------------------------------------------------------------------------------------------------------------
