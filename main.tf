@@ -15,7 +15,7 @@ provider "aws" {
 # See test/terraform_aws_example_test.go for how to write automated tests for this code.
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "aws_instance" "test-poi" {
+resource "aws_instance" "test-001" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
@@ -24,7 +24,7 @@ resource "aws_instance" "test-poi" {
   }
 }
 
-resource "aws_instance" "test-uyt" {
+resource "aws_instance" "test-002" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
