@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-variable "do_token" {}
+variable "do_token" ${{ secrets.DO_PAT }}
 
 provider "digitalocean" {
   # Configuration options
